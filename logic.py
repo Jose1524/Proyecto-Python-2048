@@ -46,5 +46,7 @@ def obtener_estado_juego(mat):
         for j in range(4):
             if(mat[i][j] == 2048):
                 return "GANASTE!!!"
+            
+    
 
     
