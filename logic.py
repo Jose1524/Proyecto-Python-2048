@@ -47,6 +47,125 @@ def obtener_estado_juego(mat):
             if(mat[i][j] == 2048):
                 return "GANASTE!!!"
             
-    
+    #Revisar si el juego continua
+    for i in range(4):
+        for j in range(4):
+            if(mat[i][j] == 0):
+                return "JUEGO EN CURSO"
 
-    
+
+#Función para duplicar el número
+def merge(mat):
+
+    changed = False
+
+    for i in range(4):
+        for j in range(3):
+
+            # If la celda actual tiene el mismo valor que la siguiente celda en la fila
+            # Y si no están vacíos entonces:
+            if(mat[i][j] == mat[i][j + 1] and mat[i][j] != 0 ):
+                
+                #Duplicar el valor
+                mat[i][j] = mat[i][j] * 2
+
+                #Convertir el valor de la derecha en 0
+                mat[i][j + 1] = 0
+                changed = True
+
+    return mat, changed
+
+
+
+#Funcion para comprimir la matriz después de cada movimientos
+def compress(mat):
+
+    #Variable para determinar si hubo un cambio o no
+    changed = False
+
+    # Nueva matriz
+    new_mat = []
+
+    # Iniciar con celdas vacias
+    for i in range(4):
+        new_mat.append([0] * 4)
+
+    # Loop para entrar a cada fila
+    # Se van a cambiar entradas a su máxima izquierda
+    for i in range(4):
+        pos = 0
+
+        # Loop para cada celda
+        for j in range(4):
+            if(mat[i][j] != 0):
+
+                # Si la celda no esta vacia
+                # Mover el valor una celda a la izquierda
+                # Esto es denotado por la variable pos
+                new_mat[i][pos] = mat[i][j]
+
+                if(j != pos):
+                    changed = True
+                pos += 1
+
+    return new_mat, changed
+
+
+
+# Funcion para revertir las filas
+def reverse(mat):
+    new_mat = []
+    for i in range(4):
+        new_mat.append([])
+        for j in range(4):
+            new_mat[i].append(mat[i][3 - j])
+    return new_mat
+
+
+
+# Funcion para intercambiar filas y columnas
+def transpose(mat):
+    new_mat = []
+    for i in range(4):
+        new_mat.append([])
+        for j in range(4):
+            new_mat[i].append(mat[j][i])
+    return new_mat
+
+
+
+def move_left(mat):
+
+    # Primero comprimir
+    new_mat, changed1 = compress(mat)
+
+    # Segundo merge para ver si se pueden juntar numeros iguales
+    new_mat, changed2 = merge(new_mat)
+
+    # Ver si hubo algún cambio
+    changed = changed1 or changed2
+
+    # Después de hacer el merge volver a comprimir
+    new_mat, temp = compress(new_mat)
+
+    # Devolver la nueva matriz al mover a la izquierda
+    return new_mat, changed
+
+
+
+def move_right(mat):
+
+    # Mover todos los valores a la derecha
+    new_mat = reverse(mat)
+
+    new_mat, changed = move_left(new_mat)
+
+    new_mat = reverse(new_mat)
+
+    return new_mat, changed
+
+
+# def move_up(mat):
+
+
+# def move_down(mat):
