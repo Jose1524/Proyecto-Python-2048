@@ -53,6 +53,25 @@ def obtener_estado_juego(mat):
             if(mat[i][j] == 0):
                 return "JUEGO EN CURSO"
 
+    # Si el juego esta vacio
+    # Pero si después de cualquier movimiento
+    # Que las celdas se junten y crean una celda vacia
+    # Entonces el juego no ha terminado
+
+    for i in range(3):
+        for j in range(3):
+            if(mat[i][j] == mat[i+1][j] or mat[i][j] == mat[i][j]+1):
+                return "JUEGO EN CURSO"
+
+    for j in range(3):
+        if(mat[3][j] = mat[3][j+1]):
+            return "JUEGO EN CURSO"
+
+    for i in range(3):
+        if(mat[i][3] = mat[i+1][3]):
+            return "JUEGO EN CURSO"
+
+    return 'PERDIO'
 
 #Función para duplicar el número
 def merge(mat):
@@ -112,6 +131,7 @@ def compress(mat):
 
 
 
+
 # Funcion para revertir las filas
 def reverse(mat):
     new_mat = []
@@ -123,6 +143,9 @@ def reverse(mat):
 
 
 
+
+
+
 # Funcion para intercambiar filas y columnas
 def transpose(mat):
     new_mat = []
@@ -131,7 +154,6 @@ def transpose(mat):
         for j in range(4):
             new_mat[i].append(mat[j][i])
     return new_mat
-
 
 
 def move_left(mat):
@@ -165,7 +187,30 @@ def move_right(mat):
     return new_mat, changed
 
 
-# def move_up(mat):
 
 
-# def move_down(mat):
+def move_up(mat):
+    # Convertir las filas por columnas para aprovechar las funciones que ya tenemos
+    new_mat = transpose(mat)
+
+    # Simular el movimiento a la izquierda para aprovechar sus funciones
+    new_mat, changed = move_left(new_mat)
+
+    # Volvemos a hacer el transpose para retornar posición original
+    new_mat = transpose(new_mat)
+
+    return new_mat, changed
+
+
+def move_down(mat):
+
+    # Convertir las filas por las columnas
+    new_mat = transpose(mat)
+
+    # Simular el movimiento a la derecha para aprovechar sus funciones
+    new_mat, changed = move_right(new_mat)
+
+    # Retornar posición original
+    new_mat = transpose(new_mat)
+
+    return new_mat, changed
