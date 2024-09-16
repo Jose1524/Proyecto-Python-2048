@@ -56,5 +56,6 @@ while(True):
         else:
             break
     #Se quiere imprimir la matriz
-    print(mat)
+    for i in mat:
+        print(i)
     
